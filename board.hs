@@ -2,7 +2,7 @@ module Board where
 import Utils
 import Data.List ((\\), nub)
 
--- Het Go board
+-- The Go board
 data Player = Black | White | None deriving (Eq, Show)
 type PositionState = Player
 
@@ -96,11 +96,11 @@ killGroup board group
   = foldl (\b p -> setPosition b None p) board group
 
 -- Example group used for testing      
-ex_group = [[Black, Black, Black] ,
-            [Black, None,  Black] ,
-            [Black, Black, None ] ]
+exGroup = [[Black, Black, Black] ,
+           [Black, None,  Black] ,
+           [Black, Black, None ] ]
 
--- Geeft de positions voor de stenen. Op het board. 
+-- Returns the positions of the stones on the board. 
 getPositions :: Board -> [(Position,Player)]      
 getPositions board
   = concat (zipWith (\ row space_x ->
@@ -143,9 +143,9 @@ getOwner board territory
 -- Helper method to getGroups and getTerritories    
 groups' board [] groups = groups
 groups' board ((position):positions) groups
-  = groups' board new_positions new_groups
+  = groups' board newPositions newGroups
   where
-    new_group = (group board position)
-    kleur = getPosition board position
-    new_groups = (new_group, kleur) : groups
-    new_positions = positions \\ new_group
+    newGroup = (group board position)
+    color = getPosition board position
+    newGroups = (newGroup, color) : groups
+    newPositions = positions \\ newGroup
