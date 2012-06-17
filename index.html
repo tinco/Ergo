@@ -31,10 +31,12 @@
         <script type="text/coffeescript">
             $ ->
                 initialize = ->
+                    @populateGame = (result) ->
+                        @id = result[0]
+                        @game = result[1]
+                        populateGoban(@game.board)
                     @newGame = () ->
-                        $.get 'game/new', (result) =>
-                            @game = result
-                            populateGoban(@game.board)
+                        $.get 'game/new', (r) => @populateGame(r)
 
                     @populateGoban = (board) ->
                         goban = $('#goban')
@@ -47,11 +49,13 @@
                                             ' class="' + col + '"> </td>'
                             content += "</tr>"
                         goban.html(content)
-                        goban.find('td').click(onSelectPosition)
+                        goban.find('td').click((e) => @onSelectPosition(e))
 
                     @onSelectPosition = (selected) ->
                         e = $(selected.target)
-                        alert(e.data('position-x') + ' ' + e.data('position-y'))
+                        x = e.data('position-x')
+                        y = e.data('position-y')
+                        $.post('game/' + @id + '/move', {x: x, y: y},(r) => @populateGame(r))
 
                 initialize.apply(window)
                 newGame()

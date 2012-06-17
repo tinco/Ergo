@@ -11,16 +11,18 @@ import qualified Data.Map as Map
 import Ergo.Game
 import Ergo.JSON
 
-main = scotty 5000 webGame
+main = do
+    games <- newMVar Map.empty
+    scotty 5000 $ webGame games
 
-webGame = do
-  games <- liftIO $ newMVar Map.empty
+webGame games = do
   let updateGame id game = updateMVar games $ Map.insert id game
+
   get "/" $ file "index.html"
 
   get "/game/new" $ do
     let game = newGame 6.5 19
-    id <- liftIO $ (randomIO :: IO(Integer))
+    id <- newId
     updateGame id game 
     json $ (id,game)
 
@@ -43,9 +45,14 @@ webGame = do
             updateGame id game'
             json $ (id, game')
           Nothing -> json $ (403 ::Int, "Not allowed" :: String)
-      Nothing -> json $ (404 ::Int, "Not found" :: String)
+      Nothing -> json $ (404 ::Int, "Not found: " ++ show id :: String)
 
 updateMVar :: MVar a -> (a -> a) -> ActionM ()
 updateMVar mvar f = liftIO $ do
     m <- takeMVar mvar
     putMVar mvar $ f m
+
+newId :: ActionM([Char])
+newId = liftIO $ do
+    g <- newStdGen
+    return $ take 16 $ (randoms g)
