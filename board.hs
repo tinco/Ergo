@@ -14,8 +14,8 @@ type Position = (Int, Int)
 type Board = [[PositionState]]
 
 -- Makes a new board of the given size.
-newboard :: Int -> Board  
-newboard size = take size (repeat (take size $ repeat None))
+newBoard :: Int -> Board  
+newBoard size = take size (repeat (take size $ repeat None))
 
 -- Returns the state of a position
 getPosition :: Board -> Position -> PositionState
