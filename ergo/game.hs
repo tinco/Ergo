@@ -1,6 +1,6 @@
-module Game where
-import Board
-import Utils
+module Ergo.Game where
+import Ergo.Board
+import Ergo.Utils
 
 -- Main Flow:
 -- Turn * -> (make move) -> Turn **

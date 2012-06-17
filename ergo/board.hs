@@ -1,5 +1,5 @@
-module Board where
-import Utils
+module Ergo.Board where
+import Ergo.Utils
 import Data.List ((\\), nub)
 
 -- The Go board
