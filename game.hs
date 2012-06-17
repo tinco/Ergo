@@ -57,6 +57,10 @@ gameFSA (Score, game) event
   where
     newGame = executeScore game event
 
+-- Turn
+-- A stone may not be placed upon another stone.
+-- A stone may not result in an own group dying.
+-- A stone may not recreate the previous situation.
 executeTurn :: Game -> Event -> Maybe Game
 executeTurn game@Game{board=board, player=player, history=history, score=score} (Selection position)
   | not invalidpos && not suicide && not ko = Just newGame
