@@ -78,7 +78,7 @@ executeTurn game@Game{board=board, player=player, history=history, score=score} 
        | otherwise = False
     --Score
     newHistory = history ++ [newBoard]
-    newGame = game{board=newBoard, history=newHistory, score=newScore, passes=0}
+    newGame = game{board=newBoard, history=newHistory, score=newScore, player = nextPlayer player, passes=0}
 
 executeTurn game Resign = Just (game {winner = nextPlayer (player game)})
 executeTurn game Pass = Just (game {passes = passes game + 1})
