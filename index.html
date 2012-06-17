@@ -44,8 +44,8 @@
                         for row,i in board
                             content += "<tr>"
                             for col,j in row
-                                content += '<td data-position-y=' + i +
-                                            ' data-position-x=' + j +
+                                content += '<td data-position-x=' + i +
+                                            ' data-position-y=' + j +
                                             ' class="' + col + '"> </td>'
                             content += "</tr>"
                         goban.html(content)
