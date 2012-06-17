@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ergo - Web Go</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="http://coffeescript.org/extras/coffee-script.js"></script>
+        <style type="text/css">
+            .goban {
+                border: 1px solid black;
+                margin: 0;
+                padding: 0;
+            }
+
+            .goban td {
+                border: 1px solid black;
+                height: 15px;
+                width: 15px;
+                margin: 0;
+                padding: 0;
+            }
+
+            .goban td.black {
+                background-color: black;
+            }
+
+            .goban td.white {
+                background-color: white;
+            }
+        </style>
+        <script type="text/coffeescript">
+            $ ->
+                initialize = ->
+                    @newGame = () ->
+                        $.get 'game/new', (result) =>
+                            @game = result
+                            populateGoban(@game.board)
+
+                    @populateGoban = (board) ->
+                        goban = $('#goban')
+                        content = ""
+                        for row,i in board
+                            content += "<tr>"
+                            for col,j in row
+                                content += '<td data-position-y=' + i +
+                                            ' data-position-x=' + j +
+                                            ' class="' + col + '"> </td>'
+                            content += "</tr>"
+                        goban.html(content)
+                        goban.find('td').click(onSelectPosition)
+
+                    @onSelectPosition = (selected) ->
+                        e = $(selected.target)
+                        alert(e.data('position-x') + ' ' + e.data('position-y'))
+
+                initialize.apply(window)
+                newGame()
+        </script>
+    </head>
+    <body>
+        <h1>Ergo Web Go</h1>
+        <button onclick="newGame()">New Game</button>
+        <table id="goban" class="goban">
+        </table>
+    </body>
+</html>
