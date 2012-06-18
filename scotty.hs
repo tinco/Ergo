@@ -55,4 +55,4 @@ updateMVar mvar f = liftIO $ do
 newId :: ActionM([Char])
 newId = liftIO $ do
     g <- newStdGen
-    return $ take 16 $ (randoms g)
+    return $ map (\i -> (['0'..'9'] ++ ['A'..'Z'] ++ ['a'..'z'])  !! i) $ take 16 $ (randomRs (0, 62) g)
