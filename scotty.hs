@@ -9,6 +9,7 @@ import Data.Monoid (mconcat)
 import qualified Data.Map as Map
 
 import Ergo.Game
+import Ergo.AI as AI
 import Ergo.JSON
 
 main = do
@@ -42,8 +43,10 @@ webGame games = do
       Just game ->
         case executeTurn game (Selection (x,y)) of
           Just game' -> do
-            updateGame id game'
-            json $ (id, game')
+            let game'' = AI.takeTurn game'
+            updateGame id game''
+            -- let the AI take a turn too.. and to prevent racy cheats, only then update game
+            json $ (id, game'')
           Nothing -> json $ (403 ::Int, "Not allowed" :: String)
       Nothing -> json $ (404 ::Int, "Not found: " ++ show id :: String)
 

@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module Ergo.Game where
 import Ergo.Board
 import Ergo.Utils
@@ -62,7 +63,7 @@ gameFSA (Score, game) event
 -- A stone may not result in an own group dying.
 -- A stone may not recreate the previous situation.
 executeTurn :: Game -> Event -> Maybe Game
-executeTurn game@Game{board=board, player=player, history=history, score=score} (Selection position)
+executeTurn game@Game{..} (Selection position)
   | not invalidpos && not suicide && not ko = Just newGame
   | otherwise = Nothing 
   where
@@ -82,5 +83,14 @@ executeTurn game@Game{board=board, player=player, history=history, score=score} 
 
 executeTurn game Resign = Just (game {winner = nextPlayer (player game)})
 executeTurn game Pass = Just (game {passes = passes game + 1})
+
+validMove game@Game{..} position = not invalidpos && not suicide && not ko
+  where
+    invalidpos = getPosition board position /= None
+    suicide = isGroupDead newBoard (group newBoard position)
+    (newBoard, p_score) | not invalidpos = move board player position
+                        | otherwise = (board, 0)
+    ko | length history > 2 = newBoard == (history !! (length history - 2))
+       | otherwise = False
 
 executeScore = undefined

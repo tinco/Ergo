@@ -57,8 +57,18 @@
                         y = e.data('position-y')
                         $.post('game/' + @id + '/move', {x: x, y: y},(r) => @populateGame(r))
 
+                    @getParam = (name) ->
+                        for v in location.search.substring( 1 ).split( "&" )
+                            if decodeURIComponent( v.split( "=" )[0] ) == name 
+                               result = decodeURIComponent( v.split( "=" )[1] ) 
+                        result
+
                 initialize.apply(window)
-                newGame()
+                if id = getParam 'game'
+                    $.get 'game/' + id, (r) => populateGame(r)
+                else
+                    newGame()
+                    
         </script>
     </head>
     <body>
