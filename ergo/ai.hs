@@ -67,9 +67,9 @@ threatMap game@Game{..} = foldl applyThreat m positions
         (1,1),(-1,1),(1,-1),(-1,-1)
       ]
     ring0Value = 1
-    ring1Value = 0.5
-    ring2Value = 0.25
-    noneModifier = 0.1
+    ring1Value = 0.67
+    ring2Value = 0.33
+    noneModifier = 0.3
     applyThreat :: [[Float]] -> (Position, PositionState) -> [[Float]]
     applyThreat m (p,s) = m'''
       where
